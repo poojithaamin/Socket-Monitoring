@@ -42,5 +42,6 @@ group_list.sort(key = len, reverse=True)
 group_list=list( chain.from_iterable(group_list))
 print '\"pid\",\"laddr\",\"raddr\",\"status\"'
 for field in group_list:
-      print '"%s","%s","%s","%s"' %(field[0], field[1], field[2], field[3])
+    print '"%s","%s","%s","%s"' %(field[0], field[1], field[2], field[3])
+    
 
