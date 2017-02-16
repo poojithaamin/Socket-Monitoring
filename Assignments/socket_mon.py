@@ -3,6 +3,9 @@
 from collections import defaultdict, Counter
 import psutil
 import operator
+from itertools import groupby
+from operator import itemgetter
+from itertools import chain
 
 conn_list = []
 for p in psutil.net_connections(kind='tcp'):
