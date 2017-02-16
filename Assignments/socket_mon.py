@@ -20,7 +20,7 @@ for p in psutil.net_connections(kind='tcp'):
         conn_var = (p.pid, laddr_var, raddr_var, p.status)
         conn_list.append(conn_var)
 
-#Implement without using group by
+#Implemented without using group by
 """
 #Get number of connections per process
 freq = Counter(process[0] for process in conn_list)
@@ -35,7 +35,7 @@ for field in sorted_list:
     print '"%s","%s","%s","%s"' %(field[0], field[1], field[2], field[3])
 """
 
-#Implement using group by
+#Implemented using group by
 conn_list.sort(key = itemgetter(0))
 
 #Group by PID and sort the output by the number of connections
