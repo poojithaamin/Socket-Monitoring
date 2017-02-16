@@ -3,6 +3,9 @@
 from collections import defaultdict, Counter
 import psutil
 import operator
+from itertools import groupby
+from operator import itemgetter
+from itertools import chain
 
 conn_list = []
 for p in psutil.net_connections(kind='tcp'):
@@ -14,9 +17,11 @@ for p in psutil.net_connections(kind='tcp'):
         raddr_var = str(p.raddr)
         raddr_var = raddr_var.replace(',', '@')
         raddr_var = raddr_var.translate(None, "()'' ")
-        conn_var = [p.pid, laddr_var, raddr_var, p.status]
+        conn_var = (p.pid, laddr_var, raddr_var, p.status)
         conn_list.append(conn_var)
 
+#Implemented without using group by
+"""
 #Get number of connections per process
 freq = Counter(process[0] for process in conn_list)
 
@@ -28,4 +33,18 @@ sorted_list = sorted(conn_list, key=lambda i: freq[i[0]], reverse=True)
 print '\"pid\",\"laddr\",\"raddr\",\"status\"'
 for field in sorted_list:
     print '"%s","%s","%s","%s"' %(field[0], field[1], field[2], field[3])
+"""
+
+#Implemented using group by
+conn_list.sort(key = itemgetter(0))
+
+#Group by PID and sort the output by the number of connections
+group_list = [list(v) for k,v in groupby(conn_list, key = itemgetter(0) )]
+group_list.sort(key = len, reverse=True)
+
+group_list=list( chain.from_iterable(group_list))
+print '\"pid\",\"laddr\",\"raddr\",\"status\"'
+for field in group_list:
+    print '"%s","%s","%s","%s"' %(field[0], field[1], field[2], field[3])
+    
 
